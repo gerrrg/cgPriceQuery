@@ -1,5 +1,3 @@
-# import cgPriceQuery
-
 from cgPriceQuery import cgPriceQuery
 import json
 

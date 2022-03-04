@@ -74,12 +74,27 @@ class historicalQuery():
 
 	# json read/write
 	def readFromJson(self, filename):
-		with open(filename) as json_file:
+		try:
+			with open(filename) as json_file:
 				data = json.load(json_file);
 				return(data);
+		except json.decoder.JSONDecodeError:
+			print("Unable to read", filename);
+			return({})
+
 	def writeToJson(self, data, filename):
-		with open(filename, 'w') as outfile:
-			json.dump(data, outfile);
+		with open(filename, 'w') as f:
+			finished = False;
+			caughtSig = False;
+			while not finished:
+				try:
+					json.dump(data, f, indent=4);
+					finished = True;
+				except KeyboardInterrupt:
+					print("Will quit once file is saved to", path);
+					caughtSig = True;
+			if caughtSig:
+				quit();
 
 	def initializeFromCaches(self):
 		for network in self.networkTokens:
@@ -194,36 +209,39 @@ class historicalQuery():
 			price = data[list(data.keys())[0]]
 		return(price["usd"]);
 
-	def callCoinGecko(self, url):
+	def callCoinGecko(self, url, maxRetries=5):
 		data=None;
-		try:
-			with timeout(seconds=self.cgTimeoutSeconds):
-				if (time.time() - self.cgLastCallTime) < self.cgCallPeriodMin:
-					time.sleep(self.cgCallPeriodMin - (time.time() - self.cgLastCallTime));
-				if self.verbose:
-					print("Calling", url);
-				r = requests.get(url);
-				if self.verbose:
-					print(r);
-				if r.status_code == 200:
-					try:
-						data = r.json()["prices"];
-						if self.verbose:
-							print(data);
-					except KeyError:
-						return(r.json())
-				else:
+		retries = 0;
+		while data is None and retries < maxRetries:
+			try:
+				with timeout(seconds=self.cgTimeoutSeconds):
+					if (time.time() - self.cgLastCallTime) < self.cgCallPeriodMin:
+						time.sleep(self.cgCallPeriodMin - (time.time() - self.cgLastCallTime));
 					if self.verbose:
-						print("Call Failed! Status code:", r.status_code);
-				self.cgLastCallTime = time.time();
-		except (TimeoutError, requests.exceptions.ReadTimeout) as e:
-			print("Query timed out, attempting to continue with cached data...");
-		except json.decoder.JSONDecodeError:
-			print("Bad or no return from CG, attempting to continue with cached data...");
+						print("Calling", url);
+					r = requests.get(url);
+					if self.verbose:
+						print(r);
+					if r.status_code == 200:
+						try:
+							data = r.json()["prices"];
+							if self.verbose:
+								print(data);
+						except KeyError:
+							return(r.json())
+					else:
+						if self.verbose:
+							print("Call Failed! Status code:", r.status_code);
+					self.cgLastCallTime = time.time();
+			except (TimeoutError, requests.exceptions.ReadTimeout) as e:
+				print("Query timed out, attempting to continue with cached data...");
+			except json.decoder.JSONDecodeError:
+				print("Bad or no return from CG, attempting to continue with cached data...");
+			retries += 1;
 		return(data);
 
 	def getPriceDataNumpy(self, network, token):
-		data = self.pricesByNetworkToken[network][token];
+		data = self.pricesByNetworkToken[network][token.lower()];
 
 		stamps = list(data.keys());
 		stamps.sort();

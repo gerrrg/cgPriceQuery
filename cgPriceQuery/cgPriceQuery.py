@@ -20,7 +20,7 @@ class priceQuery():
 			print("Network", network, "not supported!");
 			return(None);
 
-		networkTokens = {network:[token]};
+		networkTokens = {network:[token.lower()]};
 		startTime = time - self.timeBufferSeconds;
 		endTime = time + self.timeBufferSeconds;
 
@@ -32,13 +32,13 @@ class priceQuery():
 		
 		hq = historicalQuery(networkTokens, startTime=startTime, endTime=endTime, minDurationBetweenPricesHours=2.5, verbose=self.verbose);
 		(npStamps, npPrices) = hq.getPriceDataNumpy(network, token);
-		if np.amin(npStamps) > startTime:
-			startTime = np.amin(npStamps);
+		# if np.amin(npStamps) > startTime:
+			# startTime = np.amin(npStamps);
 		priceAtTime = np.interp(np.array([time]), npStamps, npPrices);
 		return({time:priceAtTime[0]});
 
 	def queryPricesInDuration(self, network, token, timeStart, timeEnd):
-		networkTokens = {network:[token]};
+		networkTokens = {network:[token.lower()]};
 		hq = historicalQuery(networkTokens, startTime=timeStart, endTime=timeEnd, verbose=self.verbose);
 		bq = blockQuery(network, verbose=self.verbose);
 		bq.queryData(startTime=timeStart, endTime=timeEnd);
@@ -70,7 +70,7 @@ class priceQuery():
 		return(output)
 
 	def queryPriceCurrent(self, network, token):
-		networkTokens = {network:[token]};
+		networkTokens = {network:[token.lower()]};
 		hq = historicalQuery(networkTokens, endTime=-1, verbose=self.verbose);
 		return(hq.getCurrentPrice(network, token));
 

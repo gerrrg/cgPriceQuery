@@ -67,12 +67,27 @@ class blockQuery():
 
 	# json read/write
 	def readFromJson(self, filename):
-		with open(filename) as json_file:
+		try:
+			with open(filename) as json_file:
 				data = json.load(json_file);
 				return(data);
+		except json.decoder.JSONDecodeError:
+			print("Unable to read", filename);
+			return({})
+
 	def writeToJson(self, data, filename):
-		with open(filename, 'w') as outfile:
-			json.dump(data, outfile);
+		with open(filename, 'w') as f:
+			finished = False;
+			caughtSig = False;
+			while not finished:
+				try:
+					json.dump(data, f, indent=4);
+					finished = True;
+				except KeyboardInterrupt:
+					print("Will quit once file is saved to", path);
+					caughtSig = True;
+			if caughtSig:
+				quit();
 
 	def initializeFromCache(self):
 		cachedData = self.loadFromCache();

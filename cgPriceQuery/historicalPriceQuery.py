@@ -190,9 +190,8 @@ class historicalQuery():
 					data = self.callCoinGecko(rangeDataUrl);
 					if not data is None:
 						newData = {int(d[0]/1000):d[1] for d in data};
-
-					self.pricesByNetworkToken[network][token].update(newData);
-					self.saveToCache(network, token);
+						self.pricesByNetworkToken[network][token].update(newData);
+						self.saveToCache(network, token);
 				bar();
 
 	def getDenseHistories(self):

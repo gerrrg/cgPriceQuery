@@ -6,6 +6,7 @@ import numpy as np
 class priceQuery():
 	networks = [
 		"ethereum",
+		"mainnet",
 		"polygon",
 		"arbitrum",
 		"fantom",

@@ -10,6 +10,8 @@ class priceQuery():
 		"polygon",
 		"arbitrum",
 		"fantom",
+		"xdai",
+		"polygon-zkevm"
 		];
 
 	def __init__(self, timeBufferSeconds=46800, verbose=False):

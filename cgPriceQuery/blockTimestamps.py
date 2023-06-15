@@ -14,8 +14,8 @@ class blockQuery():
 		"mainnet":"https://api.thegraph.com/subgraphs/name/blocklytics/ethereum-blocks",
 		"polygon":"https://api.thegraph.com/subgraphs/name/sameepsi/maticblocks",
 		"arbitrum":"https://api.thegraph.com/subgraphs/name/ianlapham/arbitrum-one-blocks",
-		"fantom":"https://api.thegraph.com/subgraphs/name/matthewlilley/fantom-blocks"
-		"gnosis":"https://api.thegraph.com/subgraphs/name/matthewlilley/xdai-blocks"
+		"fantom":"https://api.thegraph.com/subgraphs/name/matthewlilley/fantom-blocks",
+		"gnosis":"https://api.thegraph.com/subgraphs/name/matthewlilley/xdai-blocks",
 		"xdai":"https://api.thegraph.com/subgraphs/name/matthewlilley/xdai-blocks"
 	}
 

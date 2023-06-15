@@ -15,6 +15,8 @@ class blockQuery():
 		"polygon":"https://api.thegraph.com/subgraphs/name/sameepsi/maticblocks",
 		"arbitrum":"https://api.thegraph.com/subgraphs/name/ianlapham/arbitrum-one-blocks",
 		"fantom":"https://api.thegraph.com/subgraphs/name/matthewlilley/fantom-blocks"
+		"gnosis":"https://api.thegraph.com/subgraphs/name/matthewlilley/xdai-blocks"
+		"xdai":"https://api.thegraph.com/subgraphs/name/matthewlilley/xdai-blocks"
 	}
 
 	def __init__(self, network="ethereum", cachePath="./cache", verbose=False, forceReload=False):

@@ -39,6 +39,10 @@ class historicalQuery():
 									"polygon":"polygon-pos",
 									"arbitrum":"arbitrum-one",
 									"fantom":"fantom",
+									"gnosis":"xdai",
+									"xdai":"xdai",
+									"polygon-zkevm":"polygon-zkevm",
+									"zkevm":"polygon-zkevm"
 									};
 
 	knownStablecoins = [

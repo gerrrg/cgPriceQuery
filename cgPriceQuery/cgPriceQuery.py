@@ -11,6 +11,7 @@ class priceQuery():
 		"arbitrum",
 		"fantom",
 		"xdai",
+		"gnosis",
 		"polygon-zkevm"
 		];
 
